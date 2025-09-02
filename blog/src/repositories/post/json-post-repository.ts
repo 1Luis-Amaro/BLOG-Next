@@ -12,8 +12,18 @@ const JSON_POSTS_FILE_PATH = resolve( // Cria o caminho completo até o arquivo 
   'posts.json' // Arquivo JSON com os posts
 );
 
+const SIMULATE_WAIT_IN_MS = 5000;
+
+
 export class JsonPostRepository implements PostRepository { // Define uma classe que implementa a interface PostRepository
-    private async readFromDisk(): Promise<PostModel[]> { // Método privado para ler o arquivo JSON do disco
+  
+    private async simulateWait() {
+    if (SIMULATE_WAIT_IN_MS <= 0) return;
+
+    await new Promise(resolve => setTimeout(resolve, SIMULATE_WAIT_IN_MS));
+  }
+  
+  private async readFromDisk(): Promise<PostModel[]> { // Método privado para ler o arquivo JSON do disco
       const jsonContent = await readFile(JSON_POSTS_FILE_PATH, 'utf-8'); // Lê o conteúdo do arquivo como texto
       const parsedJson = JSON.parse(jsonContent); // Converte o texto JSON em um objeto JavaScript
       const { posts } = parsedJson; // Extrai a propriedade "posts" do objeto JSON (destructuring)
@@ -26,6 +36,8 @@ export class JsonPostRepository implements PostRepository { // Define uma classe
       }
 
       async findById(id: string): Promise<PostModel> { // Método público para buscar um post por ID
+            await this.simulateWait();
+
         const posts = await this.findAll(); // Busca todos os posts primeiro
         const post = posts.find(post => post.id === id); // Procura o post com o ID especificado
 
