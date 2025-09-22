@@ -1,10 +1,9 @@
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
+import { PostCoverImage } from "@/components/PostCoverImage";
 import { PostHeading } from "@/components/PostHeading";
 import { PostsList } from "@/components/PostsList";
 import { SpinLoader } from "@/components/SpinLoader";
-import Image from "next/image";
-import Link from "next/link";
 import { Suspense } from "react";
 
 export default async function HomePage() {
@@ -12,16 +11,7 @@ export default async function HomePage() {
     <Container>
       <Header />
       <section className="grid grid-cols-1 gap-8 mb-16 sm:grid-cols-2 group">
-        <Link href="#" className="w-full h-full overflow-hidden rounded-xl">
-          <Image
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition"
-            src="/images/bryen_0.png"
-            width={1200}
-            height={768}
-            alt="Título do post"
-            priority
-          />
-        </Link>
+        <PostCoverImage src='/images/bryen_5.png' href="#" />
         <div className="flex flex-col gap-4 sm:justify-center">
           <time
             className="text-slate-600 block text-sm/tight"
