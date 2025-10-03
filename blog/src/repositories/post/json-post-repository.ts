@@ -12,7 +12,7 @@ const JSON_POSTS_FILE_PATH = resolve( // Cria o caminho completo até o arquivo 
   'posts.json' // Arquivo JSON com os posts
 );
 
-const SIMULATE_WAIT_IN_MS = 0;
+const SIMULATE_WAIT_IN_MS = 5000;
 
 
 export class JsonPostRepository implements PostRepository { // Define uma classe que implementa a interface PostRepository
