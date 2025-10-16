@@ -14,5 +14,5 @@ export const drizzleDb = drizzle(sqliteDatabase, {
   schema: {
     posts: postsTable   // Registra a tabela 'posts' para uso no ORM
   },
-  logger: false,         // Mostra no console as queries SQL executadas
+  logger: true,         // Mostra no console as queries SQL executadas
 })

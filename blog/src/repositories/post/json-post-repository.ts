@@ -50,7 +50,7 @@ export class JsonPostRepository implements PostRepository { // Define uma classe
         return post; // Retorna o post encontrado
       }
 
-      async findBySlug(slug: string): Promise<PostModel> { // Método público para buscar um post por ID
+      async findBySlugPublic(slug: string): Promise<PostModel> { // Método público para buscar um post por ID
             await this.simulateWait();
 
         const posts = await this.findAllPublic(); // Busca todos os posts primeiro
