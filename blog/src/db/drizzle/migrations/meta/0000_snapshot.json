@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "e291195c-ee75-471e-bd24-60db08eda5cd",
+  "id": "414acd3a-3b41-4572-9261-6f7efee9e1e4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -18,7 +18,7 @@
           "name": "slug",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "title": {
@@ -49,8 +49,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "cover_Image_Url": {
-          "name": "cover_Image_Url",
+        "cover_image_url": {
+          "name": "cover_image_url",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -70,8 +70,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "update_at": {
-          "name": "update_at",
+        "updated_at": {
+          "name": "updated_at",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
