@@ -3,6 +3,8 @@ import { SpinLoader } from "@/components/SpinLoader";
 import { PostFeatured } from "@/components/PostFeatured";
 import { Suspense } from "react";
 
+export const dynamic = 'force-static'
+
 export default async function HomePage() {
   return (
     <>
