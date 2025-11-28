@@ -8,7 +8,7 @@ export const findPostByIdAdmin = cache(
 )
 
 
-export const findAllPostByIdAdmin = cache(
+export const findAllPostAdmin = cache(
   async () => {
     return await postRepository.findAll()
   }

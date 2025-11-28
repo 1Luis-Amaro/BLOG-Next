@@ -2,6 +2,7 @@ import { PostModel } from "@/models/post/post.models"; // Importa o tipo PostMod
 import { PostRepository } from "./post-repository"; // Importa a interface PostRepository do arquivo local
 import { readFile } from "fs/promises"; // Importa a função readFile para ler arquivos de forma assíncrona
 import { resolve } from "path"; // Importa a função resolve para criar caminhos de arquivos
+import { SIMULATE_WAIT_IN_MS } from "@/lib/post/constants";
 
 const ROOT_DIR = process.cwd(); // Pega o diretório atual onde o projeto está sendo executado
 const JSON_POSTS_FILE_PATH = resolve( // Cria o caminho completo até o arquivo JSON
@@ -12,7 +13,6 @@ const JSON_POSTS_FILE_PATH = resolve( // Cria o caminho completo até o arquivo 
   'posts.json' // Arquivo JSON com os posts
 );
 
-const SIMULATE_WAIT_IN_MS = 0;
 
 
 export class JsonPostRepository implements PostRepository { // Define uma classe que implementa a interface PostRepository
