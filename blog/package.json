@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "test-repo": "tsx src/repositories/post/json-post-repository.ts"
+    "test-repo": "tsx src/repositories/post/json-post-repository.ts",
+    "seed": "tsx src/db/drizzle/seed.ts"
   },
   "dependencies": {
     "better-sqlite3": "^12.4.1",
