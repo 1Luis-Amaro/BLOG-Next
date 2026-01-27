@@ -4,6 +4,7 @@ import "./globals.css";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ToastfyContainer } from "@/components/ToastifyContainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'The blog - Este é um blog com Next.js',
-    template: '%s | The Blog'
+    default: "The blog - Este é um blog com Next.js",
+    template: "%s | The Blog",
   },
   description: "Essa seria a descrição dessa página",
 };
@@ -38,8 +39,10 @@ export default function RootLayout({
 
           {children}
 
-    <Footer/>
+          <Footer />
         </Container>
+
+        <ToastfyContainer/>
       </body>
     </html>
   );
