@@ -1,3 +1,5 @@
+import { Button } from "@/components/Button";
+import { InputCheckBox } from "@/components/InputCheckBox";
 import { InputText } from "@/components/InputText";
 import { Metadata } from "next";
 
@@ -9,34 +11,41 @@ export const metadata: Metadata = {
 
 export default async function AdminPostPage() {
   return (
-    <div className="flex flex-col gap-6">
-      <InputText labelText="Nome" placeholder="Digite seu nome" />
-      <InputText labelText="Sobrenome" placeholder="seu sobrenome" />
-      <InputText
-        disabled
-        labelText="Sobrenome"
-        placeholder="Digite seu sobrenome"
-        defaultValue="Olá mundo"
-      />
-      <InputText
-        disabled
-        labelText="Sobrenome"
-        placeholder="Digite seu sobrenome"
+    <form action="" className="mb-16">
+      <div className="flex flex-col gap-6">
+        <InputText labelText="Nome" placeholder="Digite seu nome" />
+        <InputText labelText="Sobrenome" placeholder="seu sobrenome" />
+        <InputText
+          disabled
+          labelText="Sobrenome"
+          placeholder="Digite seu sobrenome"
+          defaultValue="Olá mundo"
+        />
+        <InputCheckBox labelText="Sobrenome" />
 
-      />
-      <InputText
+        <InputText
+          disabled
+          labelText="Sobrenome"
+          placeholder="Digite seu sobrenome"
+        />
+        <InputText
+          labelText="Sobrenome"
+          placeholder="Digite seu sobrenome"
+          readOnly
+        />
+        <InputText
+          labelText="Sobrenome"
+          placeholder="Olá Mundo"
+          defaultValue="ola mundo"
+          readOnly
+        />
 
-        labelText="Sobrenome"
-        placeholder="Digite seu sobrenome"
-        readOnly
-      />
-      <InputText
-
-        labelText="Sobrenome"
-        placeholder="Olá Mundo"
-        defaultValue='ola mundo'
-        readOnly
-      />
-    </div>
+        <div className="mt-4">
+          <Button type="submit">
+            Enviar
+          </Button>
+        </div>
+      </div>
+    </form>
   );
 }

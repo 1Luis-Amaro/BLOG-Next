@@ -51,10 +51,11 @@ export function Button({
     ButtonVariants[variant],
     buttonSizes[size],
     "flex items-center justify-center cursor-pointer",
+    "transitio",
     "disabled:bg-slate-200",
     "disabled:text-slate-500",
     "disabled:cursos-not-allowed",
   );
 
-  return <button className={buttonClasses} {...props} />;
+  return <button {...props} className={buttonClasses}  />;
 }
