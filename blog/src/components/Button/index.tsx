@@ -51,10 +51,11 @@ export function Button({
     ButtonVariants[variant],
     buttonSizes[size],
     "flex items-center justify-center cursor-pointer",
-    "transitio",
+    "transition",
     "disabled:bg-slate-200",
     "disabled:text-slate-500",
     "disabled:cursos-not-allowed",
+    props.className
   );
 
   return <button {...props} className={buttonClasses}  />;

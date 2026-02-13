@@ -5,6 +5,7 @@ import { Button } from "../Button";
 import { InputCheckBox } from "../InputCheckBox";
 import { InputText } from "../InputText";
 import { MarkdownEditor } from "../MarkDownEditor";
+import { ImageUploader } from "../Admin/ImageUploader";
 
 export function ManagerPostForm() {
   const [content, setContentValue] = useState('Esté é **um** exemplo')
@@ -19,6 +20,9 @@ export function ManagerPostForm() {
           placeholder="Digite seu sobrenome"
           defaultValue="Olá mundo"
         />
+
+    <ImageUploader/>
+
         <InputCheckBox labelText="Sobrenome" />
 
         <MarkdownEditor
