@@ -1,4 +1,4 @@
-import { ManagerPostForm } from "@/components/ManagerPostForm";
+import { ManagerPostForm } from "@/components/Admin/ManagerPostForm";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
