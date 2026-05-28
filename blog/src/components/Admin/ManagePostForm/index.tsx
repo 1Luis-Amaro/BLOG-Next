@@ -6,9 +6,16 @@ import { InputCheckBox } from "../../InputCheckBox";
 import { InputText } from "../../InputText";
 import { MarkdownEditor } from "../../MarkDownEditor";
 import { ImageUploader } from "../ImageUploader";
+import { PostModel } from "@/models/post/post.models";
+import { PublicPost } from "@/dto/post/dto";
 
-export function ManagerPostForm() {
-  const [contentValue, setContentValue] = useState("Esté é **um** exemplo");
+type ManagePostFormProps = {
+  publicPost?: PublicPost;
+
+}
+
+export function ManagePostForm({publicPost}: ManagePostFormProps) {
+  const [contentValue, setContentValue] = useState(publicPost?.content || '');
   return (
     <form action="" className="mb-16">
       <div className="flex flex-col gap-6">
@@ -27,7 +34,7 @@ export function ManagerPostForm() {
           name="id"
           placeholder="ID gerado automaticamente"
           type="text"
-          defaultValue={""}
+          defaultValue={publicPost?.id || ''}
           readOnly
         />
 
@@ -36,7 +43,7 @@ export function ManagerPostForm() {
           name="slug"
           placeholder="Slug gerada automaticamente"
           type="text"
-          defaultValue={""}
+          defaultValue={publicPost?.slug || ''}
           readOnly
         />
 
@@ -45,7 +52,7 @@ export function ManagerPostForm() {
           name="author"
           placeholder="Digite o autor"
           type="text"
-          defaultValue={""}
+          defaultValue={publicPost?.author || ''}
         />
 
         <InputText
@@ -53,7 +60,7 @@ export function ManagerPostForm() {
           name="title"
           placeholder="Digite o título"
           type="text"
-          defaultValue={""}
+          defaultValue={publicPost?.title || ''}
         />
 
         <InputText
@@ -61,7 +68,7 @@ export function ManagerPostForm() {
           name="excerpt"
           placeholder="Digite o resumo"
           type="text"
-          defaultValue={""}
+          defaultValue={publicPost?.excerpt || ''}
         />
 
         <MarkdownEditor
@@ -79,10 +86,11 @@ export function ManagerPostForm() {
           name="coverImageUrl"
           placeholder="Digite o resumo"
           type="text"
-          defaultValue={""}
+          defaultValue={publicPost?.coverImageUrl || ''}
         />
 
-        <InputCheckBox labelText="Publicar" name="published" type="checkbox" />
+        <InputCheckBox labelText="Publicar" name="published" type="checkbox"
+         defaultChecked={publicPost?.published || false} />
 
         <div className="mt-4">
           <Button type="submit">Enviar</Button>
