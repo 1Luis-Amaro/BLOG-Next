@@ -8,6 +8,7 @@ import { MarkdownEditor } from "../../MarkDownEditor";
 import { ImageUploader } from "../ImageUploader";
 import { makePartialPublicPost, PublicPost } from "@/dto/post/dto";
 import { createPostAction } from "@/actions/post/create-post-action";
+import { toast } from "react-toastify";
 
 type ManagePostFormProps = {
   publicPost?: PublicPost;
@@ -18,10 +19,17 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
     formState: makePartialPublicPost(publicPost),
     errors: [],
   };
-  const [state, action, isPeding] = useActionState(
+  const [state, action, isPending] = useActionState(
     createPostAction,
     initialState,
   );
+
+  useEffect(() => {
+    if(state.errors.length > 0 ) {
+      toast.dismiss()
+      state.errors.forEach(error => toast.error(error))
+    }
+  }, [state.errors])
 
   const {formState} = state
   const [contentValue, setContentValue] = useState(publicPost?.content || "");
@@ -75,7 +83,7 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
           labelText="Conteúdo"
           value={contentValue}
           setValue={setContentValue}
-          textAreaName="contet"
+          textAreaName="content"
           disabled={false}
         />
 
@@ -86,7 +94,7 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
           name="coverImageUrl"
           placeholder="Digite o resumo"
           type="text"
-          defaultValue={publicPost?.coverImageUrl || ""}
+          defaultValue={formState.coverImageUrl}
         />
 
         <InputCheckBox

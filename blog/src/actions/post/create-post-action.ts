@@ -1,6 +1,9 @@
 'use server'
 
-import { PublicPost } from "@/dto/post/dto"
+import { makePartialPublicPost, PublicPost } from "@/dto/post/dto"
+import { PostCreateSchema } from "@/lib/post/validation";
+import { PostModel } from "@/models/post/post.models";
+import { getZodErrorMessages } from "@/utils/get-zod-error-message";
 
 type CreatePostActionState = {
   formState: PublicPost;
@@ -19,17 +22,34 @@ export async function createPostAction(
     return {
       formState:
         prevState.formState,
-        errors: ['Dados inválidos']
-      ,
+      errors: ['Dados inválidos']
 
     }
   }
 
   const formDataToObj = Object.fromEntries(formData.entries())
+  const zodParseObj = PostCreateSchema.safeParse(formDataToObj)
 
+  if (!zodParseObj.success) {
+
+     const errors = zodParseObj.error.issues.map(issue => issue.message); return {
+       errors,
+       formState: makePartialPublicPost(formDataToObj),
+
+     }
+  }
+
+const validPostData = zodParseObj.data;
+const newPost: PostModel = {
+  ...validPostData,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  id: Date.now().toString(),
+  slug: Math.random().toString(36)
+}
 
   return {
-    formState: { ...prevState.formState, },
+    formState: newPost,
     errors: [],
   }
 }
