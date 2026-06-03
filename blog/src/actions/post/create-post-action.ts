@@ -1,11 +1,9 @@
 'use server'
 
-import { drizzleDb } from "@/db/drizzle";
-import { postsTable } from "@/db/drizzle/schemas";
 import { makePartialPublicPost, PublicPost } from "@/dto/post/dto"
 import { PostCreateSchema } from "@/lib/post/validation";
 import { PostModel } from "@/models/post/post.models";
-import { getZodErrorMessages } from "@/utils/get-zod-error-message";
+import { postRepository } from "@/repositories/post";
 import { makeSlugFromText } from "@/utils/make-slug-from-text";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
@@ -54,7 +52,21 @@ const newPost: PostModel = {
   slug: makeSlugFromText(validPostData.title)
 }
 
-await drizzleDb.insert(postsTable).values(newPost)
+try {
+  await postRepository.create(newPost)
+} catch (e: unknown) {
+  if( e instanceof Error) {
+    return {
+      formState: newPost,
+      errors: [e.message]
+    }
+  }
+
+  return {
+    formState: newPost,
+    errors: ['Erro desconhecido']
+  }
+}
 
 revalidateTag('posts')
 redirect(`/admin/post/${newPost.id}`)
