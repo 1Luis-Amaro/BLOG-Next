@@ -4,7 +4,6 @@ import { makePartialPublicPost, makePublicPostFromDb, PublicPost } from "@/dto/p
 import { PostUpdateSchema } from "@/lib/post/validation";
 import { PostModel } from "@/models/post/post-model";
 import { postRepository } from "@/repositories/post";
-import { asyncDelay } from "@/utils/async-delay";
 import { makeRandomString } from "@/utils/make-random-string";
 import { revalidateTag } from "next/cache";
 
@@ -23,7 +22,6 @@ export async function updatePostAction(
   Promise<UpdatePostActionState> {
   //TODO: verificar se o usuário tá logado
 
-  await asyncDelay(3000)
 
   if (!(formData instanceof FormData)) {
     return {
