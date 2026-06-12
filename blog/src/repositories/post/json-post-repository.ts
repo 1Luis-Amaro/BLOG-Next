@@ -1,65 +1,125 @@
-import { PostModel } from "@/models/post/post.models"; // Importa o tipo PostModel de outro arquivo
-import { PostRepository } from "./post-repository"; // Importa a interface PostRepository do arquivo local
-import { readFile } from "fs/promises"; // Importa a função readFile para ler arquivos de forma assíncrona
-import { resolve } from "path"; // Importa a função resolve para criar caminhos de arquivos
-import { SIMULATE_WAIT_IN_MS } from "@/lib/post/constants";
+import { PostRepository } from './post-repository';
+import { resolve } from 'path';
+import { readFile, writeFile } from 'fs/promises';
+import { PostModel } from '@/models/post/post-model';
 
-const ROOT_DIR = process.cwd(); // Pega o diretório atual onde o projeto está sendo executado
-const JSON_POSTS_FILE_PATH = resolve( // Cria o caminho completo até o arquivo JSON
-  ROOT_DIR, // Diretório raiz do projeto
-  'src', // Pasta src
-  'db', // Pasta db
-  'seed', // Pasta seed
-  'posts.json' // Arquivo JSON com os posts
+const simulateWaitMs = Number(process.env.SIMULATE_WAIT_IN_MS) || 0;
+
+const ROOT_DIR = process.cwd();
+const JSON_POSTS_FILE_PATH = resolve(
+  ROOT_DIR,
+  'src',
+  'db',
+  'seed',
+  'posts.json',
 );
 
+export class JsonPostRepository implements PostRepository {
+  private async simulateWait() {
+    if (simulateWaitMs <= 0) return;
 
-
-export class JsonPostRepository implements PostRepository { // Define uma classe que implementa a interface PostRepository
-
-    private async simulateWait() {
-    if (SIMULATE_WAIT_IN_MS <= 0) return;
-
-    await new Promise(resolve => setTimeout(resolve, SIMULATE_WAIT_IN_MS));
+    await new Promise(resolve => setTimeout(resolve, simulateWaitMs));
   }
 
-  private async readFromDisk(): Promise<PostModel[]> { // Método privado para ler o arquivo JSON do disco
-      const jsonContent = await readFile(JSON_POSTS_FILE_PATH, 'utf-8'); // Lê o conteúdo do arquivo como texto
-      const parsedJson = JSON.parse(jsonContent); // Converte o texto JSON em um objeto JavaScript
-      const { posts } = parsedJson; // Extrai a propriedade "posts" do objeto JSON (destructuring)
-      return posts; // Retorna apenas o array de posts
-    }
+  private async readFromDisk(): Promise<PostModel[]> {
+    const jsonContent = await readFile(JSON_POSTS_FILE_PATH, 'utf-8');
+    const parsedJson = JSON.parse(jsonContent);
+    const { posts } = parsedJson;
+    return posts;
+  }
 
-     async findAllPublic(): Promise<PostModel[]> { // Método público para buscar todos os posts
-      await this.simulateWait()
-      const posts = await this.readFromDisk(); // Chama o método privado para ler os posts do disco
-      return posts.filter(post => post.published); // Retorna a lista de posts
-      }
+  private async writeToDisk(posts: PostModel[]): Promise<void> {
+    const jsonToString = JSON.stringify({ posts }, null, 2);
+    await writeFile(JSON_POSTS_FILE_PATH, jsonToString, 'utf-8');
+  }
 
-    async findAll(): Promise<PostModel[]> {
+  async findAllPublic(): Promise<PostModel[]> {
+    await this.simulateWait();
+
+    const posts = await this.readFromDisk();
+    return posts.filter(post => post.published);
+  }
+
+  async findAll(): Promise<PostModel[]> {
     await this.simulateWait();
 
     const posts = await this.readFromDisk();
     return posts;
   }
 
-      async findById(id: string): Promise<PostModel> { // Método público para buscar um post por ID
+  async findById(id: string): Promise<PostModel> {
+    const posts = await this.findAllPublic();
+    const post = posts.find(post => post.id === id);
 
-        const posts = await this.findAllPublic(); // Busca todos os posts primeiro
-        const post = posts.find(post => post.id === id); // Procura o post com o ID especificado
+    if (!post) throw new Error('Post não encontrado para ID');
 
-        if(!post) throw new Error('Post não encontrado para ID'); // Se não encontrar, lança um erro
-        return post; // Retorna o post encontrado
-      }
+    return post;
+  }
 
-      async findBySlugPublic(slug: string): Promise<PostModel> { // Método público para buscar um post por ID
+  async findBySlugPublic(slug: string): Promise<PostModel> {
+    const posts = await this.findAllPublic();
+    const post = posts.find(post => post.slug === slug);
 
-        const posts = await this.findAllPublic(); // Busca todos os posts primeiro
-        const post = posts.find(post => post.slug === slug); // Procura o post com o ID especificado
+    if (!post) throw new Error('Post não encontrado para slug');
 
-        if(!post) throw new Error('Post não encontrado para Slug'); // Se não encontrar, lança um erro
-        return post; // Retorna o post encontrado
-      }
+    return post;
+  }
+
+  async create(post: PostModel): Promise<PostModel> {
+    const posts = await this.findAll();
+
+    if (!post.id || !post.slug) {
+      throw new Error('Post sem ID ou Slug');
+    }
+
+    const idOrSlugExist = posts.find(
+      savedPost => savedPost.id === post.id || savedPost.slug === post.slug,
+    );
+
+    if (idOrSlugExist) {
+      throw new Error('ID ou Slug devem ser únicos');
+    }
+
+    posts.push(post);
+    await this.writeToDisk(posts);
+
+    return post;
+  }
+
+  async delete(id: string): Promise<PostModel> {
+    const posts = await this.findAll();
+    const postIndex = posts.findIndex(p => p.id === id);
+
+    if (postIndex < 0) {
+      throw new Error('Post não existe');
+    }
+
+    const post = posts[postIndex];
+    posts.splice(postIndex, 1);
+    await this.writeToDisk(posts);
+
+    return post;
+  }
+
+  async update(
+    id: string,
+    newPostData: Omit<PostModel, 'id' | 'slug' | 'createdAt' | 'updatedAt'>,
+  ): Promise<PostModel> {
+    const posts = await this.findAll();
+    const postIndex = posts.findIndex(p => p.id === id);
+    const savedPost = posts[postIndex];
+
+    if (postIndex < 0) {
+      throw new Error('Post não existe');
+    }
+
+    const newPost = {
+      ...savedPost,
+      ...newPostData,
+      updatedAt: new Date().toISOString(),
+    };
+    posts[postIndex] = newPost;
+    await this.writeToDisk(posts);
+    return newPost;
+  }
 }
-
-export const postRepository: PostRepository = new JsonPostRepository(); // Cria uma instância da classe e exporta para uso em outros arquivos

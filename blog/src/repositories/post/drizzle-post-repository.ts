@@ -1,4 +1,4 @@
-import { PostModel } from "@/models/post/post.models";
+import { PostModel } from "@/models/post/post-model";
 import { PostRepository } from "./post-repository"; // Importa a interface PostRepository do arquivo local
 import { drizzleDb } from "@/db/drizzle";
 import { logColor } from "@/utils/log-color";

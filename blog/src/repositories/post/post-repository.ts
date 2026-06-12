@@ -1,4 +1,4 @@
-import { PostModel } from "@/models/post/post.models";
+import { PostModel } from "@/models/post/post-model";
 
 export interface PostRepository {
   findAllPublic(): Promise<PostModel[]>  //acha todos que estão com published como true

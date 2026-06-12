@@ -93,11 +93,11 @@ export function ImageUploader({ disabled = false }: ImageUploaderProps) {
 
       <input
         onChange={handleChange}
+        ref={fileInputRef}
         className="hidden"
         name="file"
         type="file"
         accept="image/*"
-        ref={fileInputRef}
         disabled={isUploading || disabled}
       />
     </div>

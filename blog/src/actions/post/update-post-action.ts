@@ -2,16 +2,17 @@
 
 import { makePartialPublicPost, makePublicPostFromDb, PublicPost } from "@/dto/post/dto"
 import { PostUpdateSchema } from "@/lib/post/validation";
-import { PostModel } from "@/models/post/post.models";
+import { PostModel } from "@/models/post/post-model";
 import { postRepository } from "@/repositories/post";
+import { asyncDelay } from "@/utils/async-delay";
+import { makeRandomString } from "@/utils/make-random-string";
 import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
 
 
 type UpdatePostActionState = {
   formState: PublicPost;
   errors: string[];
-  succes?: true;
+  success?: string;
 
 }
 
@@ -21,6 +22,8 @@ export async function updatePostAction(
 ):
   Promise<UpdatePostActionState> {
   //TODO: verificar se o usuário tá logado
+
+  await asyncDelay(3000)
 
   if (!(formData instanceof FormData)) {
     return {
@@ -77,12 +80,12 @@ export async function updatePostAction(
   }
 
   revalidateTag('posts')
-  redirect(`post-${post.slug}`)
+  revalidateTag(`post-${post.slug}`)
 
   return {
     formState: makePublicPostFromDb(post),
     errors: [],
-    succes: true,
+    success: makeRandomString(),
   }
 
 }
