@@ -2,14 +2,15 @@ import { PostModel } from "@/models/post/post-model";
 import { PostRepository } from "./post-repository"; // Importa a interface PostRepository do arquivo local
 import { drizzleDb } from "@/db/drizzle";
 import { asyncDelay } from "@/utils/async-delay";
-import { SIMULATE_WAIT_IN_MS } from "@/lib/post/constants";
 import { postsTable } from "@/db/drizzle/schemas";
 import { eq } from "drizzle-orm";
+
+const simulateWaitMs = Number(process.env.SIMULATE_WAIT_IN_MS) || 0
 
 export class DrizzlePostRepository implements PostRepository { // Define uma classe que implementa a interface PostRepository
 
   async findAllPublic(): Promise<PostModel[]> {
-    await asyncDelay(SIMULATE_WAIT_IN_MS, true)
+    await asyncDelay(simulateWaitMs, true)
 
     const posts = await drizzleDb.query.posts.findMany({
       orderBy: (posts, { desc }) => desc(posts.createdAt),
@@ -21,7 +22,7 @@ export class DrizzlePostRepository implements PostRepository { // Define uma cla
 
   async findBySlugPublic(slug: string): Promise<PostModel> {
 
-    await asyncDelay(SIMULATE_WAIT_IN_MS, true)
+    await asyncDelay(simulateWaitMs, true)
     const post = await drizzleDb.query.posts.findFirst({
       where: (posts, { eq, and }) =>
         and(eq(posts.published, true), eq(posts.slug, slug))
@@ -35,7 +36,7 @@ export class DrizzlePostRepository implements PostRepository { // Define uma cla
   }
 
   async findAll(): Promise<PostModel[]> {
-    await asyncDelay(SIMULATE_WAIT_IN_MS, true)
+    await asyncDelay(simulateWaitMs, true)
     const posts = await drizzleDb.query.posts.findMany({
       orderBy: (posts, { desc }) => desc(posts.createdAt)
     });
@@ -44,7 +45,7 @@ export class DrizzlePostRepository implements PostRepository { // Define uma cla
 
 
   async findById(id: string): Promise<PostModel> {
-    await asyncDelay(SIMULATE_WAIT_IN_MS, true)
+    await asyncDelay(simulateWaitMs, true)
 
     const post = await drizzleDb.query.posts.findFirst({
       where: (posts, { eq }) => eq(posts.id, id)
