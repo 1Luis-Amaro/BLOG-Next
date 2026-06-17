@@ -1,0 +1,20 @@
+import bcrypt from "bcryptjs"
+import { base64 } from "zod"
+
+export async function hashPassword(password: string) {
+  const hash = await bcrypt.hash(password, 10)
+  const base64 = Buffer.from(hash).toString('base64')
+  return base64
+}
+export async function verifyPassword(password: string, base64Hash: string) {
+  const hash = Buffer.from(base64Hash, 'base64')
+    .toString('utf-8');
+    return bcrypt.compare(password, hash)
+}
+
+
+(async () => {
+  const isPasswordValid = await verifyPassword('123456', 'JDJiJDEwJDkvMHkwcHF3T29tOG1MTWpjLkw3a2UuejBpYnNCbVJYSTV2UmJ5VVRGclgzV09la3JVTGpx')
+  console.log({isPasswordValid})
+
+})()
