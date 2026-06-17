@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs"
-import { base64 } from "zod"
 
 export async function hashPassword(password: string) {
   const hash = await bcrypt.hash(password, 10)
