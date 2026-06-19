@@ -1,7 +1,8 @@
 'use server'
 
-import { verifyPassword } from "@/lib/login/mangae-login";
+import { createLoginSession, verifyPassword } from "@/lib/login/manage-login";
 import { asyncDelay } from "@/utils/async-delay"
+import { redirect } from "next/navigation";
 
 type loginActionState = {
   username: string;
@@ -40,11 +41,6 @@ export async function loginAction(state: loginActionState, formData: FormData) {
     }
   }
 
-  //Aqui o usuário e senha não são válidos
-  //Criar o cookie e redirecionar a página
-
-  return {
-    username: '',
-    error: 'USUÁRIO LOGADO COM SUCESSO'
-  }
+await createLoginSession(username)
+redirect('/admin/post')
 }

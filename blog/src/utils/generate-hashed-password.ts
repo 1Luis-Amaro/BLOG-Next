@@ -1,4 +1,4 @@
-import { hashPassword } from "@/lib/login/mangae-login"
+import { hashPassword } from "@/lib/login/manage-login"
 
 (async () => {
   const minhaSenha = '' //NÃO ESQUECER DE EXCLUIR A SENHA DAQUI
