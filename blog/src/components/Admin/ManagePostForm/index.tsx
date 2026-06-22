@@ -58,9 +58,9 @@ export function ManagePostForm(props: ManagePostFormProps) {
   }, [state.errors]);
 
   useEffect(() => {
-    if (state.success) {  // Atenção: success (com dois 's')
+    if (state.success) {
       toast.dismiss();
-      toast.success('Post atualizado com sucesso!');  // Texto exato do professor
+      toast.success('Post atualizado com sucesso!');
     }
   }, [state.success]);
 
@@ -140,7 +140,7 @@ export function ManagePostForm(props: ManagePostFormProps) {
         <InputText
           labelText='URL da imagem de capa'
           name='coverImageUrl'
-          placeholder='Digite a url da imagem'  // Placeholder do professor
+          placeholder='Digite a url da imagem'
           type='text'
           defaultValue={formState.coverImageUrl}
           disabled={isPending}

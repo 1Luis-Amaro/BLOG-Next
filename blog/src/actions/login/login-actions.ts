@@ -4,12 +4,20 @@ import { createLoginSession, verifyPassword } from "@/lib/login/manage-login";
 import { asyncDelay } from "@/utils/async-delay"
 import { redirect } from "next/navigation";
 
-type loginActionState = {
+type LoginActionState = {
   username: string;
   error: string;
 }
 
-export async function loginAction(state: loginActionState, formData: FormData) {
+export async function loginAction(state: LoginActionState, formData: FormData) {
+   const allowLogin = Boolean(Number(process.env.ALLOW_LOGIN));
+
+  if (!allowLogin) {
+    return {
+      username: '',
+      error: 'Login not allowed',
+    };
+  }
   await asyncDelay(5000) //Vou manter dessa forma pra quem tentar atacar o sistema nao consiga por exemplo
 
   if (!(formData instanceof FormData)) {
