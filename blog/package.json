@@ -7,9 +7,11 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "migrate": "drizzle-kit migrate",
     "test-repo": "tsx src/repositories/post/json-post-repository.ts",
     "seed": "tsx src/db/drizzle/seed.ts",
-    "test:hash": "tsx src/lib/login/mange-login.ts"
+    "test:hash": "tsx src/lib/login/mange-login.ts",
+    "generatehashed": "tsx src/utils/generate-hashed-password.ts"
   },
   "dependencies": {
     "@uiw/react-md-editor": "^4.0.11",
